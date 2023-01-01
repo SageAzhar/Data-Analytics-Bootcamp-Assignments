@@ -1,0 +1,148 @@
+desc table crime_data;
+select * from crime_data;
+select count(Distinct Zip_code) from crime_data; ---- 62
+select Mode(Zip_code) from crime_data; -- 70805
+select distinct zip_code from crime_data;
+select * from crime_data where zip_code= 1;
+
+-- CITY COLUMN
+select distinct city from crime_data;
+select city from crime_data;
+select Distinct city from crime_data where zip_code = 70805;
+
+-- filling null values --> 'Baton Rouge' for city
+update crime_data
+set city = 'BATON ROUGE'
+;
+
+
+
+-- CHECKING FOR NULL VALUES
+select count(*) from crime_data where file_number is null;  -- 7313
+select count(*) from crime_data where file_number is not null; -- 483,265
+select count(*) from crime_data where full_address is null; -- 7313
+select count(*) from crime_data where address_number is null; -- 8130
+select count(*) from crime_data where STREET_DIRECTION is null; -- 410,334 (87% null)
+select count(*) from crime_data where STREET_DIRECTION is not null;
+
+
+-- STREET_DIRECTION COLUMN
+select count(file_number) from crime_data where STREET_DIRECTION is not null;
+select street_direction,count(STREET_DIRECTION) from crime_data group by street_direction;
+select mode(street_direction) from crime_data;
+
+-- filling null values with 'not known' in STREET_DIRECTION column
+update crime_data
+    set street_direction = 'Not Known'
+    where street_direction is null;
+    
+
+show columns;
+select count(distinct zip_code) from crime_data;
+select zip_code, count(zip_code) from crime_data group by zip_code;
+select OFFENSE, count(OFFENSE) from crime_data group by OFFENSE;
+select FULL_ADDRESS, count(FULL_ADDRESS) from crime_data group by FULL_ADDRESS order by count(FULL_ADDRESS) desc;
+select count(distinct full_address) from crime_data; --74,752
+select mode(full_address) from crime_data; -- 4445 plank rd (2036)
+select count(*) from crime_data where full_address is not null;
+
+-- filling null values with 'not known' in FULL_ADDRESS column (UPDATED 7313 ROWS)
+update crime_data
+    set full_address = 'Not Known'
+    where full_address is null;
+ 
+ 
+ -- COMMITTED_OR_ATTEMPTED COLUMN
+select COMMITTED_OR_ATTEMPTED,Count(COMMITTED_OR_ATTEMPTED) from crime_data group by COMMITTED_OR_ATTEMPTED;
+
+-- ADDRESS_NUMBER COLUMN
+select ADDRESS_NUMBER, Count(ADDRESS_NUMBER) from crime_data group by ADDRESS_NUMBER order by Count(ADDRESS_NUMBER) desc;
+select count(distinct ADDRESS_NUMBER) from crime_data;
+select count(*) from crime_data where ADDRESS_NUMBER is null; -- 8130
+
+-- FILE_NUMBER COLUMN
+select count(distinct file_number) from crime_data; -- 326180
+select file_number, Count(file_number) from crime_data group by file_number order by count(file_number) desc;
+
+select count(*) from crime_data where file_number is null; -- 7313
+
+-- CRIME COLUMN
+select crime, count(crime) from crime_data group by crime order by count(crime) desc;
+select count(*) from crime_data where crime is null;
+
+-- OFFENSE_TIME COLUMN
+select * from crime_data where offense_time is null;
+
+
+-- STREET_NAME COLUMN
+select count(*) from crime_data where STREET_NAME is null;
+select * from crime_data where street_name is null;
+select count(distinct street_name) from crime_data;
+
+-- filling null values with 'not known' in street_name column (UPDATED 7313 ROWS)
+update crime_data
+    set STREET_NAME = 'Not Known'
+    where STREET_NAME is null;
+    
+-- STREET_TYPE COLUMN 
+select count(distinct street_type) from crime_data;
+select street_type, count(street_type) from crime_data group by street_type order by count(street_type) desc;
+select count(*) from crime_data where STREET_TYPE is null; -- 23913
+
+-- filling null values with 'not known' in STREET_TYPE column (UPDATED 23913 ROWS)
+update crime_data
+    set STREET_TYPE = 'Not Known'
+    where STREET_TYPE is null;
+
+-- STATE column
+select count(distinct STATE) from crime_data;
+SELECT DISTINCT STATE FROM CRIME_DATA;
+
+-- filling null values with 'LA' column STATE (UPDATED 7313 ROWS)
+update crime_data
+    set STATE = 'LA'
+    where STATE is null;
+
+-- district column
+select district, count(district) from crime_data group by district order by count(district) desc;
+select count(*) from crime_data where district is null;
+
+
+-- zone column
+select zone, count(zone) from crime_data group by zone order by count(zone) desc;
+select count(*) from crime_data where zone is null;
+
+-- filling null values with 'not known' in ZONE column (UPDATED 23122 ROWS)
+update crime_data
+    set zone = 'Not Known'
+    where zone is null;
+
+
+
+-- subzone column
+select distinct subzone from crime_data;
+select count(*) from crime_data where subzone is null;
+    
+-- crime_prevention_district column
+select distinct crime_prevention_district from crime_data;
+select count(*) from crime_data where crime_prevention_district is null;
+select crime_prevention_district, count(crime_prevention_district) from crime_data 
+group by crime_prevention_district
+order by count(crime_prevention_district) desc;
+
+
+-- Geolocation column
+select distinct geolocation from crime_data;
+select COUNT(distinct geolocation) from crime_data;
+select count(*) from crime_data where geolocation is null;
+select geolocation, count(geolocation) from crime_data group by geolocation order by count(geolocation) desc;
+
+-- filling null values with 'not known' in GEOLOCATION column (UPDATED  ROWS)
+update crime_data
+    set geolocation = 'Not Known'
+    where  geolocation is null;
+
+
+select full_address, count(full_address) from crime_data group by full_address order by count(full_address) desc;
+
+

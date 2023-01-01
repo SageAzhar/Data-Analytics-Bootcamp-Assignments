@@ -1,0 +1,42 @@
+Crime Data Analysis Log
+
+AWS---->Snowflake---->Power Bi
+
+AWS - created a 1] Bucket 2] policy 3] role 4] event notification 5] uploaded data into the bucket
+
+Snowflake - Craeted the table-->created stage-->storage integration-->data pipeline
+
+Power bi - created a link between Snowflake & Power Bi and imported the data
+
+-- data transormation in snowflake[sql] --
+	1] since the data in about baton rouge city and most of the rows were null in city column so 
+	   entered value "baton rogue" in city column
+      
+      2] filling null values with 'not known' in STREET_DIRECTION column [87%]
+
+	3] filling null values with 'not known' in FULL_ADDRESS column (UPDATED 7313 ROWS)
+
+ 	4] filling null values with 'not known' in street_name column (UPDATED 7313 ROWS)
+	
+	5] filling null values with 'not known' in STREET_TYPE column (UPDATED 23913 ROWS)
+	 
+	6] filled state null values 'LA'
+
+	7] filling null values with 'not known' in ZONE column (UPDATED 23122 ROWS)
+	
+	8] filling null values with 'not known' in GEOLOCATION column (UPDATED 7313 ROWS)
+
+-- Power Bi
+	1] Created a year column.
+	2] Final Report
+
+
+------------------------------------------------------------------------------------------------
+dealt with columns:
+1] city 2] street_direction 3] full_address 4] Address_number () 5] file_number() 6] crime
+7] committed_or_attempted 8]offense 9]offense_time 10] street_name 11] street_type 12] state
+13] ZONE 14] District 15] subzone 16] crime_prevention_district 17] geolocation
+
+
+
+

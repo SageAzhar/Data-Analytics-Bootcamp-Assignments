@@ -1,0 +1,73 @@
+CREATE OR REPLACE TABLE Crime_data(
+FILE_NUMBER	INT,
+OFFENSE_DATE VARCHAR(20),	
+OFFENSE_TIME INT,
+CRIME VARCHAR(40),
+COMMITTED_OR_ATTEMPTED VARCHAR(12),
+OFFENSE VARCHAR(50),
+OFFENSE_DESCRIPTION VARCHAR(60),
+FULL_ADDRESS VARCHAR(50),
+ADDRESS_NUMBER INT,
+STREET_DIRECTION VARCHAR(10),
+STREET_NAME VARCHAR(50),
+STREET_TYPE VARCHAR(25),
+CITY VARCHAR(15),
+STATE VARCHAR(15),
+ZIP_CODE VARCHAR(15),
+DISTRICT VARCHAR(15),
+ZONE VARCHAR(15),
+SUBZONE VARCHAR(15),
+COMPLETE_DISTRICT VARCHAR(15),
+COUNCIL_DISTRICT VARCHAR(15),
+CRIME_PREVENTION_DISTRICT VARCHAR(30),
+GEOLOCATION VARCHAR(100)
+);
+
+DESC TABLE CRIME_DATA;
+-- creating another column to covert OFFENSE DATE into DATE datatype
+ALTER TABLE CRIME_DATA
+    ADD COLUMN OFFENSE_DATE2 DATE;
+
+UPDATE CRIME_DATA
+    SET OFFENSE_DATE2 = OFFENSE_DATE;
+
+SELECT OFFENSE_DATE,OFFENSE_DATE2 FROM CRIME_DATA;
+
+-- creating storage integration
+CREATE OR REPLACE STORAGE INTEGRATION S3_CA
+type = external_stage
+storage_provider = S3
+enabled = True
+storage_aws_role_arn = 'arn:aws:iam::551449517925:role/crimedatarole'
+storage_allowed_locations = ('s3://crimedatabucket1/');
+
+DESC Integration S3_CA;
+
+-- creating stage
+CREATE OR REPLACE STAGE crimedata_cdl_stage
+url = 's3://crimedatabucket1/' -- Bucket URL
+file_format = csv
+storage_integration = S3_CA;
+
+list @crimedata_cdl_stage;
+
+-- create a pipe
+
+CREATE OR REPLACE PIPE crimedata_cdl_pipe AUTO_INGEST = True AS
+COPY INTO Crime_data
+FROM @crimedata_cdl_stage
+FILE_FORMAT = csv;
+
+show pipes;
+
+alter pipe crimedata_cdl_pipe refresh;
+
+select SYSTEM$PIPE_STATUS('crimedata_cdl_pipe');
+
+select count(*) from CRIME_DATA;
+
+ 
+
+
+
+
